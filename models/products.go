@@ -38,8 +38,6 @@ type Dimensions struct {
 	Height int    `json:"height"`
 	Units  string `json:"units"`
 }
-type Attributes struct {
-}
 type Variants struct {
 	ID              string     `json:"id"`
 	Sku             string     `json:"sku"`
@@ -56,7 +54,7 @@ type Variants struct {
 	Weight          float64    `json:"weight"`
 	WeightUnits     string     `json:"weightUnits"`
 	Dimensions      Dimensions `json:"dimensions"`
-	Attributes      Attributes `json:"attributes"`
+	Attributes      map[string]interface{} `json:"attributes"`
 }
 type Images struct {
 	ID     string `json:"id"`
@@ -79,7 +77,7 @@ type Product struct {
 	Images                []Images              `json:"images"`
 	OptionNames           []string              `json:"optionNames"`
 	GoogleProductCategory GoogleProductCategory `json:"googleProductCategory"`
-	Attributes            Attributes            `json:"attributes"`
+	Attributes            map[string]interface{}            `json:"attributes"`
 	Created               time.Time             `json:"created"`
 	Updated               time.Time             `json:"updated"`
 }

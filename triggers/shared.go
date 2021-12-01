@@ -1,6 +1,7 @@
-package main
+package triggers
 
 import (
+	"fmt"
 	"go.uber.org/zap"
 	"switchboard-module-boilerplate/env"
 	"switchboard-module-boilerplate/extract"
@@ -52,8 +53,13 @@ func (s *Service) ProcessBatchEvent(event models.TriggerEvent) {
 
 func (s *Service) ProcessSingleProduct(product models.Product, event models.TriggerEvent) {
 	var err error
+	var processed bool
 	if env.DoTransform() {
-		product, err = transform.Transform(product)
+		processed, product, err = transform.Transform(product)
+		if !processed {
+			s.logger.Info(fmt.Sprintf("product [%s] has already been processed", product.ID))
+			return
+		}
 		if err != nil {
 			s.logger.Error("failed to transform product", zap.Error(err))
 			return

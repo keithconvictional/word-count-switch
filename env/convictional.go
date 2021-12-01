@@ -9,3 +9,11 @@ func IsBuyer() bool {
 func ConvictionalAPIKey() string {
 	return os.Getenv("CONVICTIONAL_API_KEY")
 }
+
+func ConvictionalAPIKeyForLoad() string {
+	key := os.Getenv("CONVICTIONAL_API_KEY_FOR_LOAD")
+	if key != "" {
+		return key
+	}
+	return ConvictionalAPIKey()
+}

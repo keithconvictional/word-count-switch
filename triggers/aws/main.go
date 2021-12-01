@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"go.uber.org/zap"
 	"switchboard-module-boilerplate/logging"
+	"switchboard-module-boilerplate/triggers"
 )
 
 func main() {
@@ -26,7 +27,7 @@ func HandleRequest(ctx context.Context, awsEvent AWSTriggerEvent) {
 		return
 	}
 
-	service := NewService(logger) // TODO - Move shared drive
+	service := triggers.NewService(logger)
 	service.Run(event)
 }
 

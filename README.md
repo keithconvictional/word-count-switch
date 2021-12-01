@@ -1,34 +1,14 @@
-# convic-module-boilerplate
+# Word Count Switch
 
-## Environment Variables
+A switch that pulls down descriptions from products, counts the numbers of words and pushes the output back onto the product.
 
-### General
+This switch will run a very simple way: it gets trigger via a webhook.
 
-| Name  | Required | Description   |
-| ----- | -------- | ------------- |
-| `Example` | True | This is a demo |
-
-### GCP
-
-| Name  | Required | Description   |
-| ----- | -------- | ------------- |
-| `Example` | True | This is a demo |
-
-
-### AWS
-
-#### Load
-
-| Name  | Required | Description   |
-| ----- | -------- | ------------- |
-| `LOAD_SQS` | False | The ARN URL of the SQS you are looking to publish too. You need to make sure your IAM role on the Lambda has publish permissions. Your queue should also allow your IAM role to publish to it. Ex. `https://sqs.us-east-2.amazonaws.com/1234/DemoName` (`https://sqs.<region>.amazonaws.com/<Account number>/<SQS Name>`) |
-
-## Running
-
-### Local
-
-#### AWS
+It will load through the Convictional API.
 
 ```
-go run ./triggers/aws/...
+bash scripts/package-lambda.sh 
 ```
+
+Pull from API so envs
+
