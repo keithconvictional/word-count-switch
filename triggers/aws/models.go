@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"switchboard-module-boilerplate/models"
 )
@@ -17,7 +16,9 @@ type AWSTriggerEvent struct {
 
 func (b *AWSTriggerEvent) ConvertToTriggerEvent() (models.TriggerEvent, error) {
 	if len(b.Records) != 1 {
-		return models.TriggerEvent{}, errors.New("no records found")
+		return models.TriggerEvent{
+			Batch: true,
+		}, nil
 	}
 
 	var product models.Product

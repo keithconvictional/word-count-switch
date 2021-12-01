@@ -21,14 +21,18 @@ func GetProductsFromAPI(event models.TriggerEvent) ([]models.Product, error) {
 	rl := rate.NewLimiter(rate.Every(1*time.Second), 5) // 5 request every 1 seconds
 	c := outbound_http.NewClient(rl)
 	hasMore := true
-	page := 1
+	page := 0
 	results := []models.Product{}
 	for hasMore {
 		reqURL := fmt.Sprintf("%s/products?page=%d&limit=25", env.ConvictionalAPIURL(), page)
 		if env.IsBuyer() {
 			reqURL = fmt.Sprintf("%s/buyer/products?page=%d&limit=25", env.ConvictionalAPIURL(), page)
 		}
+		logger.Debug(fmt.Sprintf("Calling [%s]", reqURL))
 		req, _ := http.NewRequest("GET", reqURL, nil)
+		req.Header.Set("Authorization", env.ConvictionalAPIKey())
+		req.Header.Set("Accept", "application/json")
+
 		resp, err := c.Do(req)
 		if err != nil {
 			logger.Error("failed to make an HTTP call", zap.Error(err))
@@ -50,6 +54,7 @@ func GetProductsFromAPI(event models.TriggerEvent) ([]models.Product, error) {
 			return []models.Product{}, err
 		}
 
+
 		if env.IsBuyer() {
 			var productsResponse models.BuyerProductsResponse
 			err = json.Unmarshal(body, &productsResponse)
@@ -63,17 +68,17 @@ func GetProductsFromAPI(event models.TriggerEvent) ([]models.Product, error) {
 			}
 			results = append(results, productsResponse.Data...)
 		} else {
-			var productsResponse models.SellerProductsResponse
+			var productsResponse []models.Product
 			err = json.Unmarshal(body, &productsResponse)
 			if err != nil {
 				logger.Error("failed to unmarshal product response", zap.Int("statusCode", resp.StatusCode))
 				return []models.Product{}, err
 			}
 
-			if productsResponse.HasMore {
+			if len(productsResponse) < 25 {
 				hasMore = false
 			}
-			results = append(results, productsResponse.Data...)
+			results = append(results, productsResponse...)
 		}
 	}
 
