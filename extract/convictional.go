@@ -24,9 +24,9 @@ func GetProductsFromAPI(event models.TriggerEvent) ([]models.Product, error) {
 	page := 1
 	results := []models.Product{}
 	for hasMore {
-		reqURL := fmt.Sprintf("https://api.convictional.com/products?page=%d&limit=25", page)
+		reqURL := fmt.Sprintf("%s/products?page=%d&limit=25", env.ConvictionalAPIURL(), page)
 		if env.IsBuyer() {
-			reqURL = fmt.Sprintf("https://api.convictional.com/buyer/products?page=%d&limit=25", page)
+			reqURL = fmt.Sprintf("%s/buyer/products?page=%d&limit=25", env.ConvictionalAPIURL(), page)
 		}
 		req, _ := http.NewRequest("GET", reqURL, nil)
 		resp, err := c.Do(req)
@@ -87,9 +87,9 @@ func GetProductFromAPI(productID string) (models.Product, error) {
 	rl := rate.NewLimiter(rate.Every(1*time.Second), 5) // 5 request every 1 seconds
 	c := outbound_http.NewClient(rl)
 
-	reqURL := fmt.Sprintf("https://api.convictional.com/products/%s", productID)
+	reqURL := fmt.Sprintf("%s/products/%s", env.ConvictionalAPIURL(), productID)
 	if env.IsBuyer() {
-		reqURL = fmt.Sprintf("https://api.convictional.com/buyer/products/%s", productID)
+		reqURL = fmt.Sprintf("%s/buyer/products/%s", env.ConvictionalAPIURL(), productID)
 	}
 	req, _ := http.NewRequest("GET", reqURL, nil)
 	resp, err := c.Do(req)

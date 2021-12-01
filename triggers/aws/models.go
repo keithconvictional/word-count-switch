@@ -34,10 +34,10 @@ func (b *AWSTriggerEvent) ConvertToTriggerEvent() (models.TriggerEvent, error) {
 }
 
 type AWSRecord struct {
-	MessageID string `json:"messageId"`
+	MessageID string `json:"messageId,omitempty"`
 	Body string `json:"body"`
-	EventSource string `json:"eventSource"`
-	EventSourceARN string `json:"eventSourceARN"`
+	EventSource string `json:"eventSource,omitempty"`
+	EventSourceARN string `json:"eventSourceARN,omitempty"`
 }
 
 func (r *AWSRecord) Batch() bool {

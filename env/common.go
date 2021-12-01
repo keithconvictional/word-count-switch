@@ -2,6 +2,14 @@ package env
 
 import "os"
 
+func ConvictionalAPIURL() string {
+	baseUrl := os.Getenv("CONVICTIONAL_API")
+	if baseUrl != "" {
+		return baseUrl
+	}
+	return "https://api.convictional.com"
+}
+
 func DoExtract() bool {
 	return os.Getenv("EXTRACT") == "true"
 }

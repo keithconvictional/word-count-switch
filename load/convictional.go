@@ -14,7 +14,7 @@ func UpdateProduct(product models.Product, event models.TriggerEvent) error {
 		return nil
 	}
 
-	url := fmt.Sprintf("https://api.convictional.com/products/%s", product.ID)
+	url := fmt.Sprintf("%s/products/%s", env.ConvictionalAPIURL(), product.ID)
 	if env.IsBuyer() {
 		return errors.New("no endpoint exists yet")
 	}
