@@ -41,7 +41,7 @@ type Images struct {
 	ID         string      `json:"_id"`
 	Src        string      `json:"src"`
 	Position   int         `json:"position"`
-	VariantIds interface{} `json:"variantIds"`
+	VariantIds []string `json:"variantIds"`
 }
 
 type Variant struct {

@@ -2,6 +2,7 @@ package transform
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 	"switchboard-module-boilerplate/models"
 )
@@ -23,7 +24,7 @@ func Transform(product models.Product) (bool, models.Product, error) {
 	if product.Attributes == nil {
 		product.Attributes = map[string]interface{}{}
 	}
-	product.Attributes[wordCountAttributeKey] = CountWords(description)
+	product.Attributes[wordCountAttributeKey] = strconv.Itoa(CountWords(description))
 
 	return true, product, nil
 }
