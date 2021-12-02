@@ -39,7 +39,7 @@ func PublishToAPI(config APIPublishConfig, event models.TriggerEvent) error {
 		return err
 	}
 	if resp.StatusCode != http.StatusOK {
-		logger.Error("Request delivery failed", zap.Error(err))
+		logger.Error("Request delivery failed", zap.Error(err), zap.Int("Status code", resp.StatusCode))
 		return errors.New("request failed")
 	}
 	return nil

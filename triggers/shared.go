@@ -54,9 +54,10 @@ func (s *Service) ProcessBatchEvent(event models.TriggerEvent) {
 func (s *Service) ProcessSingleProduct(product models.Product, event models.TriggerEvent) {
 	var err error
 	var processed bool
+	var updatedProduct models.Product
 	if env.DoTransform() {
 		s.logger.Debug(fmt.Sprintf("Tranforming [%s]", product.ID))
-		processed, product, err = transform.Transform(product)
+		processed, updatedProduct, err = transform.Transform(product)
 		if !processed {
 			s.logger.Info(fmt.Sprintf("product [%s] has already been processed", product.ID))
 			return
@@ -71,7 +72,7 @@ func (s *Service) ProcessSingleProduct(product models.Product, event models.Trig
 
 	if env.DoLoad() {
 		s.logger.Debug(fmt.Sprintf("Loading [%s]", product.ID))
-		err = load.Single(product, event)
+		err = load.Single(product, updatedProduct, event)
 		if err != nil {
 			s.logger.Error("failed to load product", zap.Error(err))
 		}

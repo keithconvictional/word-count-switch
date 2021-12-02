@@ -11,11 +11,11 @@ const (
 	LoadMethodConvictionalAPI = "convictional_api"
 )
 
-func Single(product models.Product, event models.TriggerEvent) error {
+func Single(product models.Product, updatedProduct models.Product, event models.TriggerEvent) error {
 	fmt.Printf("product :: %+v\n", product)
 	switch env.LoadMethod() {
 	case LoadMethodConvictionalAPI:
-		return UpdateProduct(product, event)
+		return UpdateProduct(product, updatedProduct, event)
 	default:
 		return errors.New("invalid load method")
 	}
